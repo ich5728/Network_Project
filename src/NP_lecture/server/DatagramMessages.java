@@ -47,6 +47,7 @@ public class DatagramMessages {
     public String checkID(String UserName, String UserIP, String userPWD) {
 
         //input data to database
+        int count = 0;
         this.UserName = UserName;
         this.UserIP = UserIP;
         String server = "127.0.0.1"; // MySQL 서버 주소
@@ -69,7 +70,7 @@ public class DatagramMessages {
                     }
                 } else {
                     System.out.println("Wrong ID, IP");
-                    USERDATA NUSER = new USERDATA();
+                    USERDATA NUSER = new USERDATA(count, UserName, UserIP, UserPWD);
 //                    System.out.println("유저 정보를 추가? Y/N");
 //                    String a = sc.nextLine();
 //                    switch (a) {
