@@ -1,6 +1,5 @@
 package NP_lecture.client;
 
-import NP_lecture.server.DatagramMessages;
 
 import java.io.*;
 import java.net.DatagramPacket;
@@ -64,20 +63,24 @@ public class MyClient {
                     System.out.println("Welcome Server");
                     break;
                 case "N":
+                    helper.ServerGetIPID(ID);
+                    helper.ServerGetIPID(UserAddr);
+                    helper.ServerGetIPID(PWD);
                     System.out.println("Close Server");
-                    helper.done();
             }
 
 //
-            System.out.println("Select Connect Server : " + "\t" + "1/2");
+            System.out.println("Select Connect Server : " + "\t" + "1(일반 채팅) / 2(번역 채팅, 한국어 -> 영어)");
             String selectSer = br.readLine();
             switch (selectSer) {
                 case "1":
                     helper.ServerGetNum(selectSer);
-                    myclient2 tcp_chat = new myclient2();
+                    TCP_CHAT_CLIENT tcp_chat = new TCP_CHAT_CLIENT();
                     tcp_chat.main(args);
                 case "2":
                     helper.ServerGetNum(selectSer);
+                    TCP_API_CHAT tcp_chat2 = new TCP_API_CHAT();
+                    tcp_chat2.main(args);
 
             }
         } // end try

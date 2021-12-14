@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class myclient2 {
+public class TCP_CHAT_CLIENT {
     public static void main(String[] args) {
         InputStreamReader is = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(is);
@@ -29,7 +29,7 @@ public class myclient2 {
 
             // Connect
             System.out.println(sock + ": 연결됨");
-            System.out.println("한글에서 영어로 번역하고 싶으면 문장의 앞 뒤로 '& '를 입력하세요.");
+            System.out.println("Start Chat");
 
             OutputStream toServer = sock.getOutputStream();
 
@@ -37,7 +37,7 @@ public class myclient2 {
             ServerHandler chandler = new ServerHandler(sock);
             chandler.start();
 
-            byte[] buf = new byte[10];
+            byte[] buf = new byte[1024];
             int count;
 
             while ((count = System.in.read(buf)) != -1) {
@@ -45,7 +45,7 @@ public class myclient2 {
                 toServer.flush();
             }
         } catch (IOException e) {
-            System.out.println("연결종로 (" + e + ")");
+            System.out.println("연결종료 (" + e + ")");
         } finally {
             try {
                 if (sock != null)

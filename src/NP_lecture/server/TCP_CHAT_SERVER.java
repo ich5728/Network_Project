@@ -6,7 +6,7 @@ import java.io.*;
         import java.util.*;
 
 //TCP
-public class myserver2 {
+public class TCP_CHAT_SERVER {
     public static ArrayList<Socket> clients = new ArrayList<Socket>(5);
     //server에서 ArrayList로 받아온 clients들의 serverSocket값들 저장
     //max 5
@@ -25,7 +25,6 @@ public class myserver2 {
                 clients.add(client);
                 myServer_Thread myserver = new myServer_Thread(client);
                 myserver.start();
-
 //              Thread theThread = new Thread(new myServer_Thread(server_socket));
 //               theThread.start();       //스레드를 스타트 run() method call
             }
