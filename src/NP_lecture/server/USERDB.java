@@ -2,7 +2,7 @@ package NP_lecture.server;
 
 import java.sql.*;
 
-class USERDATA {
+public class USERDB {
 
     private Connection con = null;
     private Statement stat = null;
@@ -12,7 +12,7 @@ class USERDATA {
     static final String user_name = "root"; //  MySQL 서버 아이디
     static final String password = "1234"; // MySQL 서버 비밀번호
 
-    public USERDATA(int count, String userID, String userIP, String userPWD) throws SQLException {
+    public USERDB(int count, String UserName, String UserIP, String UserPWD) throws SQLException {
 
         // 1.드라이버 로딩
         try {
@@ -23,7 +23,15 @@ class USERDATA {
         }
 
         // 2.연결
-        tableInsert(count, userID, userIP, userPWD);
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
+            System.out.println("정상적으로 연결되었습니다.");
+        } catch (SQLException e) {
+            System.err.println("con 오류:" + e.getMessage());
+            e.printStackTrace();
+        }
+        stat = con.createStatement();
+
 
         // 3.해제
         try {
@@ -43,12 +51,24 @@ class USERDATA {
         System.out.println(query);
         try {
             con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
-            System.out.println("정상적으로 연결되었습니다.");
         } catch (SQLException e) {
             System.err.println("con 오류:" + e.getMessage());
             e.printStackTrace();
         }
+        stat = con.createStatement();
+        stat.executeUpdate(query);
+    }
 
+    public void tableUpdate(int count, String userid, String userip, String userpwd) throws SQLException {
+        Table tn = new Table(count, userid, userip, userpwd);
+        String query = "UPDATE user_db " + "SET IP = '" + tn.IP + "' WHERE ID = '" + tn.ID + "';";
+        System.out.println(query);
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
+        } catch (SQLException e) {
+            System.err.println("con 오류:" + e.getMessage());
+            e.printStackTrace();
+        }
         stat = con.createStatement();
         stat.executeUpdate(query);
     }

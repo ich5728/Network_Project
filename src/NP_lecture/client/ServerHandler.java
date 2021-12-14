@@ -13,7 +13,7 @@ public class ServerHandler extends Thread {
 
     public void run() {
         InputStream fromServer = null;
-        try {       //���� �д� �ٽ� ���
+        try {
             fromServer = sock.getInputStream();
 
             byte[] buf = new byte[10];
@@ -23,9 +23,8 @@ public class ServerHandler extends Thread {
                 //ApiExamTranslateNmt.main(buf); //���⼭ ���
                 System.out.write(buf, 0, count);        //ȭ�鿡 ����
 
-
         } catch (IOException e) {
-            System.out.println("��������(" + e + ")");
+            System.out.println("Exception(" + e + ")");
         } finally {
             try {
                 if (fromServer != null)

@@ -1,78 +1,85 @@
 package NP_lecture.client;
 
+import NP_lecture.server.DatagramMessages;
+
 import java.io.*;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class MyClient {
-    static final String endMessage = ".";
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        byte[] buf = new byte[1024];
         Socket sock = null;
-
+        Scanner sc = new Scanner(System.in);
+        int count = 0;
         InputStreamReader is = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(is);
+        DatagramPacket DP = new DatagramPacket(buf, buf.length);
+
 
         try {
             System.out.println("Input your IP Address : ");
             String hostName = br.readLine();
             if (hostName.length() == 0) // if user did not enter a name
                 hostName = "localhost";  //   use the default host name
-
             System.out.println("Input your Port Number : ");
             String portNum = br.readLine();
-            if (portNum.length() == 0)
-                portNum = "2323";          // default port number
+            if (portNum.length() == 0) {
+                portNum = "2323";
+            } else {
+                System.out.println("Defferent Sock Number");
+                sock.close();
+            }    // default port number
             System.out.println("Input your ID : ");
-            sc.nextLine();
+            String ID = br.readLine();
+            if (ID.length() == 0)
+                ID = InetAddress.getLocalHost().getHostName();
             System.out.println("Input your PassWord : ");
+            String PWD = br.readLine();
+            if (PWD.length() == 0)
+                PWD = "1234";
 
-
-            System.out.println("Connect.");
 
             InetAddress address = InetAddress.getLocalHost();
-            String UserName = address.getHostName(); //Com Name
             String UserAddr = address.getHostAddress(); //IP
-            String UserName_form = "[" + UserName + "] >>";
-            System.out.println(UserName);
-            System.out.println(UserAddr);
-            MyClientHelper helper = new MyClientHelper(hostName, portNum, UserName_form);
-            helper.ServerGetIPID(UserName);
-            helper.ServerGetIPID(UserAddr);
+            String UserName_form = "[" + ID + "] >>";
+            System.out.println("Check Your Info");
+            System.out.println("Your Info : ID : " + ID + ", IP : " + UserAddr + ", PWD : " + PWD);
+            MyClientHelper helper = new MyClientHelper(hostName, portNum, UserName_form, ID, PWD);
 
-            boolean done = false;
-            String message, echo;
-
-            int portnum = Integer.parseInt(portNum);
-            sock = new Socket(hostName, portnum);
-            System.out.println(sock + ": Connect");
-
-            OutputStream toServer = sock.getOutputStream();
-
-            ServerHandler chandler = new ServerHandler(sock);
-            chandler.start();
-            byte[] buf = new byte[10];
-            int count = System.in.read(buf);
-
-            while (!done) {
-                System.out.println("Enter a line to receive an echo back from the server, " + "or a single peroid to quit.");
-                message = br.readLine();
-
-                if ((message.trim()).equals(endMessage)) {
-                    done = true;
+// 여기에다가 정보 출력, 값 입력받는 거
+//            System.out.println("Not Info in DATABASE");
+            System.out.println("Create Your Info?   Y/N");
+            String Check = sc.nextLine();
+            switch (Check) {
+                case "Y":
+                    helper.ServerGetIPID(ID);
+                    helper.ServerGetIPID(UserAddr);
+                    helper.ServerGetIPID(PWD);
+                    System.out.println("Create your Info");
+                    System.out.println("Welcome Server");
+                    break;
+                case "N":
+                    System.out.println("Close Server");
                     helper.done();
-                    sock.close();
-                } else {
-                    echo = helper.getEcho(message);
-                    //
-                    System.out.println(echo);
-                    toServer.write(buf, 0, count);
-                    toServer.flush();
-                }
-            } // end while
+            }
+
+//
+            System.out.println("Select Connect Server : " + "\t" + "1/2");
+            String selectSer = br.readLine();
+            switch (selectSer) {
+                case "1":
+                    helper.ServerGetNum(selectSer);
+                    myclient2 tcp_chat = new myclient2();
+                    tcp_chat.main(args);
+                case "2":
+                    helper.ServerGetNum(selectSer);
+
+            }
         } // end try
         catch (UnknownHostException ex) {
             ex.printStackTrace();
