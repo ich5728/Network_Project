@@ -39,7 +39,6 @@ public class myServerDatagramSocket extends DatagramSocket {
         //   received and sender's address
         DatagramMessages returnVal = new DatagramMessages( );
         returnVal.putVal(new String(receiveBuffer),datagram.getAddress( ),datagram.getPort( ));
-
         return returnVal;
     } //end receiveMessage
 } //end class

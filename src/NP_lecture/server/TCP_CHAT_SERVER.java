@@ -2,8 +2,8 @@
 package NP_lecture.server;
 
 import java.io.*;
-        import java.net.*;
-        import java.util.*;
+import java.net.*;
+import java.util.*;
 
 //TCP
 public class TCP_CHAT_SERVER {
@@ -13,7 +13,7 @@ public class TCP_CHAT_SERVER {
 
     public static void main(String[] args) throws IOException {
         int serverPort = 2323; // default port
-        if(args.length == 1)
+        if (args.length == 1)
             serverPort = Integer.parseInt(args[0]);
         try {
             ServerSocket serverSocket = new ServerSocket(serverPort);
@@ -28,8 +28,7 @@ public class TCP_CHAT_SERVER {
 //              Thread theThread = new Thread(new myServer_Thread(server_socket));
 //               theThread.start();       //스레드를 스타트 run() method call
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }//end catch
     }//end main

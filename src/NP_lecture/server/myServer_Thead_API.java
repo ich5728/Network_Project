@@ -23,7 +23,6 @@ public class myServer_Thead_API extends Thread {
     public void run() {
         InputStream fromClient = null;
         OutputStream toClient = null;
-
         try {
             System.out.println(sock + ": Connected");
             fromClient = sock.getInputStream();
