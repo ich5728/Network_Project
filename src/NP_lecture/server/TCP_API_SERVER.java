@@ -7,7 +7,7 @@ import java.util.*;
 
 //TCP
 public class TCP_API_SERVER {
-    public static ArrayList<Socket> clients = new ArrayList<Socket>(5);
+    public static ArrayList<Socket> clients2 = new ArrayList<Socket>(5);
 
     public static void main(String[] args) throws IOException {
         int serverPort = 2323; // default port
@@ -19,10 +19,9 @@ public class TCP_API_SERVER {
             // server - client 간 connect, creating connection socket
             while (true) {
                 Socket client = serverSocket.accept();
-                clients.add(client);
-                myServer_Thead_API myserver = new myServer_Thead_API(client);
-                myserver.start();
-
+                clients2.add(client);
+                myServer_Thead_API myserver2 = new myServer_Thead_API(client);
+                myserver2.start();
             }
         } catch (Exception e) {
             e.printStackTrace();

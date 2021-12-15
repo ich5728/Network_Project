@@ -5,16 +5,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 // 네이버 기계번역 (Papago SMT) API 예제
 public class api {
-    public static void main(byte[] buf) throws UnsupportedEncodingException {
-        String clientId = "CQT3XMTMBH5ysvpuFpBZ";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "MIC7YhHI2R";//애플리케이션 클라이언트 시크릿값";
-        Scanner sc = new Scanner(System.in);
+    public static byte[] main(byte[] buf) throws UnsupportedEncodingException {
+        String clientId = "Pwp_wOXj4ZO_98ucLQTm";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "n5hrUKgtie";//애플리케이션 클라이언트 시크릿값";
 
         String line1 = new String(buf); //byte to String
 
@@ -32,22 +31,20 @@ public class api {
 
         String responseBody = post(apiURL, requestHeaders, text);
 
-        //System.out.println(responseBody);
 
         //parsing
-        String test[] = new String[3];
-        for (int i = 0; i < test.length; i++) {
-            test = responseBody.split("&");
-        }
+        String test[] = responseBody.split("&");
         System.out.println(test[1]);
+        byte[] last = test[1].getBytes(StandardCharsets.UTF_8);
+        return last;
     }
 
-    private static String post(String apiUrl, Map<String, String> requestHeaders, String text){
+    private static String post(String apiUrl, Map<String, String> requestHeaders, String text) {
         HttpURLConnection con = connect(apiUrl);
         String postParams = "source=ko&target=en&text=" + text; //원본언어: 한국어 (ko) -> 목적언어: 영어 (en)
         try {
             con.setRequestMethod("POST");
-            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
+            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
                 con.setRequestProperty(header.getKey(), header.getValue());
             }
 
@@ -70,10 +67,10 @@ public class api {
         }
     }
 
-    private static HttpURLConnection connect(String apiUrl){
+    private static HttpURLConnection connect(String apiUrl) {
         try {
             URL url = new URL(apiUrl);
-            return (HttpURLConnection)url.openConnection();
+            return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
             throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
         } catch (IOException e) {

@@ -21,24 +21,29 @@ public class myServer_Thead_API extends Thread {
     }
 
     public void run() {
-
         InputStream fromClient = null;
         OutputStream toClient = null;
 
         try {
             System.out.println(sock + ": Connected");
             fromClient = sock.getInputStream();
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[30];
             int count;
             while ((count = fromClient.read(buf)) != -1) {
-                for (Socket s : TCP_API_SERVER.clients) {
+                for (Socket s : TCP_API_SERVER.clients2) {
                     if (sock != s) {
                         toClient = s.getOutputStream();
-                        toClient.write(buf, 0, count);
+                        if (buf[0] == 38) {
+                            byte[] text = api.main(buf);
+                            int count2 = api.main(buf).length;
+                            toClient.write(text, 0, count2);
+                        } else {
+                            toClient.write(buf, 0, count);
+                        }
                         toClient.flush();
                     }
                 }
-                api.main(buf);  //이거를 출력해야함
+                api.main(buf);
             }
         } catch (IOException e) {
             System.out.println("Exception caught in thread : " + e);
